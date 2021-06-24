@@ -17,7 +17,18 @@ import (
 )
 
 var TIMEWAIT = time.Duration(1)
-var VIDEOLIST = []string{"6d45e61a723f66ed.mp4", "8ba2ea4293039c30.mp4", "af63c74c8601c8dd.mp4", "ebe6a4f020a6a972.mp4"}
+var VIDEOLIST = []string{
+	"186971ce281553fc.mp4",
+	"34ed221a538be280.mp4",
+	"4adacecb3fce47ef.mp4",
+	"6d45e61a723f66ed.mp4",
+	"7aad52bbf690d9e3.mp4",
+	"8ba2ea4293039c30.mp4",
+	"9306144e1e6252bb.mp4",
+	"af63c74c8601c8dd.mp4",
+	"ebe6a4f020a6a972.mp4",
+	"f563464ab2b0ed43.mp4",
+}
 var VIDEODIR = "./Video"
 var CLOUDURL = "http://***REMOVED***:8000"
 var LOCALURL = "http://localhost:8000"
