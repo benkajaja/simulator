@@ -61,43 +61,30 @@ func Inference(g *gin.Context) {
 	}
 	ext := filepath.Ext(file.Filename)            // .mp4
 	key := strings.TrimSuffix(file.Filename, ext) // abc
-	targetName := key + "-ok" + ext
+	targetName := key + "-" + conf.ROLE + ext
+	sourceVideoPath, _ := filepath.Abs(dst + file.Filename)
+	outputVideoPath, _ := filepath.Abs(dst + targetName)
+	outputDirPath, _ := filepath.Abs(dst)
 
-	addr := "0.0.0.0:" + conf.OBJ_DETECT_MOD_SERVICE_PORT
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
-	conn, err := grpc.DialContext(ctx, addr, grpc.WithInsecure(), grpc.WithBlock())
-	if err != nil {
-		log.Println("[ERROR] Can not connect to gRPC server: ", err)
-		g.JSON(http.StatusInternalServerError, gin.H{"message": err})
-		return
+	var score float32
+	var action string
+	if conf.OBJ_DETECT_MOD_POLICY == "SAVE" || conf.ROLE == "CLOUD" {
+		score, action, err = localInference(outputDirPath, sourceVideoPath, outputVideoPath)
+		if err != nil {
+			g.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		}
+	} else {
+		action = "CLOUD INFERENCE"
+		score, err = cloudInference(sourceVideoPath)
+		if err != nil {
+			g.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+		}
 	}
-	defer conn.Close()
 
-	c := service.NewObjDetectModserviceClient(conn)
-	r, err := c.Inference(context.Background(),
-		&service.InferenceArg{
-			ModelPath: "model/frozen_inference_graph.pb",
-			// VideoPath:              "Video/onesec.mp4",
-			VideoPath:        dst + file.Filename,
-			OverlapOutputDir: "overlap",
-			OverlapOutput:    "no",
-			DetectedOutput:   "yes",
-			// DetectedOutputDir:      "output",
-			// OutputLabeledVideoPath: "output/onesec.mp4",
-			DetectedOutputDir:      dst,
-			OutputLabeledVideoPath: dst + targetName,
-		},
-	)
-	if err != nil {
-		log.Println("[ERROR] Can not connect to gRPC server: ", err)
-		g.JSON(http.StatusInternalServerError, gin.H{"message": err})
-		return
-	}
-	log.Println("[DEBUG] inference result: ", r.Status, r.Score)
 	g.JSON(http.StatusOK, gin.H{
-		"message": r.Status,
-		"score":   r.Score,
+		"message": "OK",
+		"score":   score,
+		"action":  action,
 	})
 }
 
