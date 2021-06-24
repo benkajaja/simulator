@@ -37,6 +37,7 @@ var UPLOADTHRESHOLD = 1.0
 type InferenceResp struct {
 	Message string  `json:"message"`
 	Score   float64 `json:"score"`
+	Action  string  `json:"action"`
 }
 
 type UploadResp struct {
@@ -75,41 +76,46 @@ func GetMode() string {
 
 func SendInferenceRequest(mode string, videopath string, wg *sync.WaitGroup) {
 	defer wg.Done()
-	var url string
-	switch mode {
-	case "CLOUD":
-		url = CLOUDURL
-	case "LOCAL":
-		url = LOCALURL
-	default:
-		url = LOCALURL
-	}
+	var url = LOCALURL
+	// switch mode {
+	// case "CLOUD":
+	// 	url = CLOUDURL
+	// case "LOCAL":
+	// 	url = LOCALURL
+	// default:
+	// 	url = LOCALURL
+	// }
 
 	var resp InferenceResp
-	inferenceRawResp := SendPostReq(url+"/objdetectmod/inference", videopath, "file")
+	var status int
+	status, inferenceRawResp := SendPostReq(url+"/objdetectmod/inference", videopath, "file")
 	if err := json.Unmarshal(inferenceRawResp, &resp); err != nil {
 		log.Fatal(err)
 	}
+	if status != http.StatusOK {
+		log.Fatal(resp.Message)
+	}
+	log.Println("[DEBUG] LOCAL", videopath, resp.Score, resp.Action)
 	// log.Println("[DEBUG]", mode, resp.Message, resp.Score)
 
-	if mode == "CLOUD" {
-		log.Println("[DEBUG]", mode, videopath, resp.Message, resp.Score)
-		return
-	}
+	// if mode == "CLOUD" {
+	// 	log.Println("[DEBUG]", mode, videopath, resp.Message, resp.Score)
+	// 	return
+	// }
 
-	if resp.Score < UPLOADTHRESHOLD {
-		log.Println("[DEBUG]", mode, videopath, resp.Message, resp.Score, "NOT UPLOAD")
-		return
-	}
-	var uploadresp UploadResp
-	uploadRawResp := SendPostReq(CLOUDURL+"/objdetectmod/upload", videopath, "file")
-	if err := json.Unmarshal(uploadRawResp, &uploadresp); err != nil {
-		log.Fatal(err)
-	}
-	log.Println("[DEBUG]", mode, videopath, resp.Message, resp.Score, "DO UPLOAD")
+	// if resp.Score < UPLOADTHRESHOLD {
+	// 	log.Println("[DEBUG]", mode, videopath, resp.Message, resp.Score, "NOT UPLOAD")
+	// 	return
+	// }
+	// var uploadresp UploadResp
+	// uploadRawResp := SendPostReq(CLOUDURL+"/objdetectmod/upload", videopath, "file")
+	// if err := json.Unmarshal(uploadRawResp, &uploadresp); err != nil {
+	// 	log.Fatal(err)
+	// }
+	// log.Println("[DEBUG]", mode, videopath, resp.Message, resp.Score, "DO UPLOAD")
 }
 
-func SendPostReq(url, videopath, field string) []byte {
+func SendPostReq(url, videopath, field string) (int, []byte) {
 	file, err := os.Open(videopath)
 
 	if err != nil {
@@ -148,6 +154,6 @@ func SendPostReq(url, videopath, field string) []byte {
 	if err != nil {
 		log.Fatal(err)
 	}
-	return content
+	return response.StatusCode, content
 	// log.Println(string(content))
 }
