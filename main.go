@@ -74,7 +74,7 @@ func SendInferenceRequest(mode string, videopath string, wg *sync.WaitGroup) {
 	}
 
 	var resp InferenceResp
-	inferenceRawResp := SendPostReq(url+"/inference", videopath, "file")
+	inferenceRawResp := SendPostReq(url+"/objdetectmod/inference", videopath, "file")
 	if err := json.Unmarshal(inferenceRawResp, &resp); err != nil {
 		log.Fatal(err)
 	}
@@ -90,7 +90,7 @@ func SendInferenceRequest(mode string, videopath string, wg *sync.WaitGroup) {
 		return
 	}
 	var uploadresp UploadResp
-	uploadRawResp := SendPostReq(CLOUDURL+"/upload", videopath, "file")
+	uploadRawResp := SendPostReq(CLOUDURL+"/objdetectmod/upload", videopath, "file")
 	if err := json.Unmarshal(uploadRawResp, &uploadresp); err != nil {
 		log.Fatal(err)
 	}
