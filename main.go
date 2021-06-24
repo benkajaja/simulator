@@ -32,7 +32,7 @@ var VIDEOLIST = []string{
 var VIDEODIR = "./Video"
 var CLOUDURL = "http://***REMOVED***:8000"
 var LOCALURL = "http://localhost:8000"
-var UPLOADTHRESHOLD = 0.5
+var UPLOADTHRESHOLD = 1.0
 
 type InferenceResp struct {
 	Message string  `json:"message"`
@@ -69,6 +69,7 @@ func GetMode() string {
 	case (false):
 		mode = "LOCAL"
 	}
+	mode = "LOCAL"
 	return mode
 }
 
