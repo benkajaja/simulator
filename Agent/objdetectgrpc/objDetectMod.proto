@@ -1,0 +1,38 @@
+syntax = "proto3";
+// option go_package = "goagent/service";
+option go_package = "/service";
+
+message initArg {
+    string label_path = 1;
+    int32 num_classes = 2;
+    int32 queue_size = 3;
+    // string gpudev = 4;
+}
+
+message inferenceArg {
+    string model_path = 1;
+    string video_path = 2;
+    string overlap_output_dir = 3;
+    string overlap_output = 4;
+    string detected_output = 5;
+    string detected_output_dir = 6;
+    string output_labeled_video_path = 7;
+}
+
+message scores {
+    repeated float score = 1;
+}
+
+message initOutput {
+    string status = 1;
+}
+
+message inferenceOutput {
+    string status = 1;
+    float score = 2;
+}
+
+service objDetectModservice{
+    rpc init(initArg) returns (initOutput);
+    rpc inference(inferenceArg) returns (inferenceOutput);
+}

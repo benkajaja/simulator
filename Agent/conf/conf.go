@@ -1,0 +1,4 @@
+package conf
+
+var OBJ_DETECT_MOD_SERVICE_PORT = "50052"
+var AGENT_PORT = "8000"
