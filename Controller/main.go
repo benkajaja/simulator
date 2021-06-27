@@ -1,16 +1,32 @@
 package main
 
 import (
+	"encoding/json"
+	"errors"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"net/http"
+	"net/url"
 	"os"
 	"os/signal"
 	"simulator/Controller/conf"
 	"syscall"
 	"time"
 )
+
+type StatusResp struct {
+	GPUUtil    float32 `json:"gpuUtil"`
+	GPUMemUtil float32 `json:"gpumemUtil"`
+}
+
+type PolicyGETResp struct {
+	Message string `json:"message"`
+	Policy  string `json:"policy"`
+}
+
+type PolicyPOSTResp struct {
+	Message string `json:"message"`
+}
 
 func main() {
 	sigs := make(chan os.Signal, 1)
@@ -39,13 +55,44 @@ func test() {
 	}
 
 	defer resp.Body.Close()
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		// handle error
-		log.Println("[ERROR] failed to read body")
+
+	var data StatusResp
+	if err = json.NewDecoder(resp.Body).Decode(&data); err != nil {
+		log.Println("[ERROR] failed to decode", err)
 		return
 	}
 
-	fmt.Println(string(body))
+	var policy string
+	switch {
+	case data.GPUUtil > conf.CHANGE_POLICY_GPUUTIL_THRESHOLD:
+		policy = "UPLOAD"
+	default:
+		policy = "SAVE"
+	}
+	if err := changePolicy(host, "objdetectmod", policy); err != nil {
+		log.Printf("[ERROR] changePolicy %s %s %s failed %s", host, "objdetectmod", policy, err.Error())
+	}
 
+	log.Printf("[DEBUG] GPU:%.2f GPUMEM:%.2f POLICY:%s", data.GPUUtil, data.GPUMemUtil, policy)
+}
+
+func changePolicy(host, service, policy string) error {
+	var err error
+	posturl := fmt.Sprintf("http://%s/%s/policy", host, service)
+	data := url.Values{
+		"policy": {policy},
+	}
+	resp, err := http.PostForm(posturl, data)
+	if err != nil {
+		return err
+	}
+
+	var postResp PolicyPOSTResp
+	if err = json.NewDecoder(resp.Body).Decode(&postResp); err != nil {
+		return errors.New("decode FAILED")
+	}
+	if resp.StatusCode != http.StatusOK {
+		return errors.New(postResp.Message)
+	}
+	return nil
 }
