@@ -18,5 +18,7 @@ func main() {
 	objDetectModService.GET("/init", objdetectmod.Init)
 	objDetectModService.POST("/inference", objdetectmod.Inference)
 	objDetectModService.POST("/upload", objdetectmod.Upload)
+	objDetectModService.GET("/policy", objdetectmod.PolicyGET)
+	objDetectModService.POST("/policy", objdetectmod.PolicyPOST)
 	r.Run("0.0.0.0:" + conf.AGENT_PORT)
 }

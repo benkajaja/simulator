@@ -113,3 +113,17 @@ func Upload(g *gin.Context) {
 		"message": "Save file to " + dst + targetName,
 	})
 }
+
+func PolicyGET(g *gin.Context) {
+	g.JSON(http.StatusOK, gin.H{"messge": "OK", "policy": conf.OBJ_DETECT_MOD_POLICY})
+}
+
+func PolicyPOST(g *gin.Context) {
+	policy := g.PostForm("policy")
+	if policy == "UPLOAD" || policy == "SAVE" {
+		conf.OBJ_DETECT_MOD_POLICY = policy
+		g.JSON(http.StatusOK, gin.H{"messge": "OK"})
+		return
+	}
+	g.JSON(http.StatusInternalServerError, gin.H{"message": fmt.Sprintf("policy %s not support", policy)})
+}
