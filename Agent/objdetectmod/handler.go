@@ -72,12 +72,14 @@ func Inference(g *gin.Context) {
 		score, action, err = localInference(outputDirPath, sourceVideoPath, outputVideoPath)
 		if err != nil {
 			g.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+			return
 		}
 	} else {
 		action = "CLOUD INFERENCE"
 		score, err = cloudInference(sourceVideoPath)
 		if err != nil {
 			g.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
+			return
 		}
 	}
 
