@@ -50,11 +50,11 @@ func main() {
 	wg := new(sync.WaitGroup)
 	wg.Add(len(VIDEOLIST))
 
-	for _, v := range VIDEOLIST {
+	for k, v := range VIDEOLIST {
 		videopath := fmt.Sprintf("%s/%s", VIDEODIR, v)
 		mode := GetMode()
 		go SendInferenceRequest(mode, videopath, wg)
-		log.Println("[DEBUG] INFERENCE", v)
+		log.Println("[DEBUG] INFERENCE", k, v)
 		time.Sleep(TIMEWAIT * time.Second)
 	}
 	wg.Wait()
@@ -95,7 +95,7 @@ func SendInferenceRequest(mode string, videopath string, wg *sync.WaitGroup) {
 	if status != http.StatusOK {
 		log.Fatal(resp.Message)
 	}
-	log.Println("[DEBUG] LOCAL", videopath, resp.Score, resp.Action)
+	log.Printf("[DEBUG] %s %.2f %s", filepath.Base(videopath), resp.Score, resp.Action)
 	// log.Println("[DEBUG]", mode, resp.Message, resp.Score)
 
 	// if mode == "CLOUD" {
