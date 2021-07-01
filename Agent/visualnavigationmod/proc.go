@@ -60,7 +60,7 @@ func localInference(outputDirPath, sourceVideoPath, outputVideoPath string) (flo
 	}
 	log.Println("[DEBUG] inference result: ", r.Status, r.Score)
 
-	if r.Score < conf.VISUAL_NAVIGATION_MOD_UPLOAD_THRESHOLD {
+	if r.Score < conf.VISUAL_NAVIGATION_MOD_UPLOAD_THRESHOLD || conf.ROLE == "CLOUD" {
 		// log.Println("[DEBUG]", mode, videopath, resp.Message, resp.Score, "NOT UPLOAD")
 		action = "NOT UPLOAD"
 		return r.Score, action, nil
