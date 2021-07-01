@@ -32,7 +32,7 @@ func NewObjDetectModserviceClient(cc grpc.ClientConnInterface) ObjDetectModservi
 
 func (c *objDetectModserviceClient) Init(ctx context.Context, in *InitArg, opts ...grpc.CallOption) (*InitOutput, error) {
 	out := new(InitOutput)
-	err := c.cc.Invoke(ctx, "/objDetectModservice/init", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/objdetectgrpc.objDetectModservice/init", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -41,7 +41,7 @@ func (c *objDetectModserviceClient) Init(ctx context.Context, in *InitArg, opts 
 
 func (c *objDetectModserviceClient) Inference(ctx context.Context, in *InferenceArg, opts ...grpc.CallOption) (*InferenceOutput, error) {
 	out := new(InferenceOutput)
-	err := c.cc.Invoke(ctx, "/objDetectModservice/inference", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/objdetectgrpc.objDetectModservice/inference", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -90,7 +90,7 @@ func _ObjDetectModservice_Init_Handler(srv interface{}, ctx context.Context, dec
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/objDetectModservice/init",
+		FullMethod: "/objdetectgrpc.objDetectModservice/init",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ObjDetectModserviceServer).Init(ctx, req.(*InitArg))
@@ -108,7 +108,7 @@ func _ObjDetectModservice_Inference_Handler(srv interface{}, ctx context.Context
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/objDetectModservice/inference",
+		FullMethod: "/objdetectgrpc.objDetectModservice/inference",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ObjDetectModserviceServer).Inference(ctx, req.(*InferenceArg))
@@ -120,7 +120,7 @@ func _ObjDetectModservice_Inference_Handler(srv interface{}, ctx context.Context
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var ObjDetectModservice_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "objDetectModservice",
+	ServiceName: "objdetectgrpc.objDetectModservice",
 	HandlerType: (*ObjDetectModserviceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

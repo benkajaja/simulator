@@ -1,5 +1,5 @@
 syntax = "proto3";
-// option go_package = "goagent/service";
+package objdetectgrpc;
 option go_package = "/objdetectgrpc";
 
 message initArg {
