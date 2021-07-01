@@ -1,6 +1,6 @@
 syntax = "proto3";
 // option go_package = "goagent/service";
-option go_package = "/service";
+option go_package = "/objdetectgrpc";
 
 message initArg {
     string label_path = 1;
