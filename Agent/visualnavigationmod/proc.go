@@ -29,7 +29,6 @@ type UploadResp struct {
 }
 
 func localInference(outputDirPath, sourceVideoPath, outputVideoPath string) (float32, string, error) {
-	log.Println("[DEBUG] TAGA")
 	var score = float32(0)
 	var action = "UNKNOWN"
 	var err error
@@ -46,9 +45,7 @@ func localInference(outputDirPath, sourceVideoPath, outputVideoPath string) (flo
 	}
 
 	defer conn.Close()
-	log.Println("[DEBUG] TAGB")
 	c := service.NewVisualNavigationModserviceClient(conn)
-	log.Println("[DEBUG] TAGC")
 	r, err := c.Inference(context.Background(),
 		&service.InferenceArg{
 			Input:  sourceVideoPath,
