@@ -1,0 +1,33 @@
+syntax = "proto3";
+package visualnavigationgrpc;
+option go_package = "/visualnavigationgrpc";
+
+message inferenceArg {
+    string input = 1;
+    string output = 2;
+}
+
+message initArg {
+    string input = 1;
+    float sec = 2;
+    string objDetectModel = 3;
+    string siameseModel = 4;
+}
+
+message scores {
+    repeated float score = 1;
+}
+
+message initOutput {
+    string status = 1;
+}
+
+message inferenceOutput {
+    string status = 1;
+    float score = 2;
+}
+
+service visualNavigationModservice{
+    rpc init(initArg) returns (initOutput);
+    rpc inference(inferenceArg) returns (inferenceOutput);
+}
