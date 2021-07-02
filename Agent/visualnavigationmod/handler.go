@@ -77,7 +77,7 @@ func Inference(g *gin.Context) {
 			return
 		}
 	} else {
-		action = "CLOUD INFERENCE"
+		action = "VISUAL CLOUD INFERENCE"
 		score, err = cloudInference(sourceVideoPath)
 		if err != nil {
 			g.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})

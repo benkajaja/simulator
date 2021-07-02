@@ -5,7 +5,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io"
 	"io/ioutil"
 	"log"
@@ -61,7 +60,14 @@ func localInference(outputDirPath, sourceVideoPath, outputVideoPath string) (flo
 	}
 	log.Println("[DEBUG] inference result: ", r.Status, r.Score)
 
-	action = fmt.Sprintf("%s INFERENCE", conf.ROLE)
+	switch conf.ROLE {
+	case "CLOUD":
+		action = "VISUAL CLOUD INFERENCE"
+		return r.Score, action, nil
+	case "EDGE":
+		action = "VISUAL EDGE  INFERENCE"
+		return r.Score, action, nil
+	}
 	return r.Score, action, nil
 }
 

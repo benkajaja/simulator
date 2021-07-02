@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"log"
@@ -69,9 +70,16 @@ func localInference(outputDirPath, sourceVideoPath, outputVideoPath string) (flo
 	}
 	log.Println("[DEBUG] inference result: ", r.Status, r.Score)
 
-	if r.Score < conf.OBJ_DETECT_MOD_UPLOAD_THRESHOLD || conf.ROLE == "CLOUD" {
+	action = fmt.Sprintf("%s INFERENCE", conf.ROLE)
+
+	if conf.ROLE == "CLOUD" {
+		action = "OBJECT CLOUD INFERENCE" // not used
+		return r.Score, action, nil
+	}
+
+	if r.Score < conf.OBJ_DETECT_MOD_UPLOAD_THRESHOLD {
 		// log.Println("[DEBUG]", mode, videopath, resp.Message, resp.Score, "NOT UPLOAD")
-		action = "NOT UPLOAD"
+		action = "OBJECT EDGE  INFERENCE NOT UPLOAD"
 		return r.Score, action, nil
 	}
 
@@ -87,7 +95,7 @@ func localInference(outputDirPath, sourceVideoPath, outputVideoPath string) (flo
 		return r.Score, action, errors.New("UPLOAD FAILED " + uploadresp.Message)
 	}
 
-	action = "UPLOAD"
+	action = "OBJECT EDGE  INFERENCE UPLOAD"
 	return r.Score, action, nil
 }
 
