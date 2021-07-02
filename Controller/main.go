@@ -72,6 +72,9 @@ func test() {
 	if err := changePolicy(host, "objdetectmod", policy); err != nil {
 		log.Printf("[ERROR] changePolicy %s %s %s failed %s", host, "objdetectmod", policy, err.Error())
 	}
+	if err := changePolicy(host, "visualnavigationmod", policy); err != nil {
+		log.Printf("[ERROR] changePolicy %s %s %s failed %s", host, "visualnavigationmod", policy, err.Error())
+	}
 
 	log.Printf("[DEBUG] GPU:%.2f GPUMEM:%.2f POLICY:%s", data.GPUUtil, data.GPUMemUtil, policy)
 }
