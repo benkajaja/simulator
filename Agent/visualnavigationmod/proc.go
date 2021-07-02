@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"log"
@@ -60,25 +61,7 @@ func localInference(outputDirPath, sourceVideoPath, outputVideoPath string) (flo
 	}
 	log.Println("[DEBUG] inference result: ", r.Status, r.Score)
 
-	if r.Score < conf.VISUAL_NAVIGATION_MOD_UPLOAD_THRESHOLD || conf.ROLE == "CLOUD" {
-		// log.Println("[DEBUG]", mode, videopath, resp.Message, resp.Score, "NOT UPLOAD")
-		action = "NOT UPLOAD"
-		return r.Score, action, nil
-	}
-
-	var uploadresp UploadResp
-	status, uploadRawResp, err := sendPostReq(conf.CLOUDURL+"/visualnavigationmod/upload", sourceVideoPath, "file")
-	if err != nil {
-		return r.Score, action, err
-	}
-	if err := json.Unmarshal(uploadRawResp, &uploadresp); err != nil {
-		return r.Score, action, errors.New("UNMARSHAL FAILED")
-	}
-	if status != http.StatusOK {
-		return r.Score, action, errors.New("UPLOAD FAILED " + uploadresp.Message)
-	}
-
-	action = "UPLOAD"
+	action = fmt.Sprintf("%s INFERENCE", conf.ROLE)
 	return r.Score, action, nil
 }
 
