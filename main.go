@@ -30,9 +30,7 @@ var VIDEOLIST = []string{
 	"f563464ab2b0ed43.mp4",
 }
 var VIDEODIR = "./Video"
-var CLOUDURL = "http://***REMOVED***:8000"
 var LOCALURL = "http://localhost:8000"
-var UPLOADTHRESHOLD = 1.0
 
 type InferenceResp struct {
 	Message string  `json:"message"`
@@ -48,12 +46,12 @@ func main() {
 	rand.Seed(time.Now().UnixNano())
 
 	wg := new(sync.WaitGroup)
-	wg.Add(len(VIDEOLIST))
+	wg.Add(2 * len(VIDEOLIST))
 
 	for k, v := range VIDEOLIST {
 		videopath := fmt.Sprintf("%s/%s", VIDEODIR, v)
-		mode := GetMode()
-		go SendInferenceRequest(mode, videopath, wg)
+		go SendInferenceRequest("objdetectmod", videopath, wg)
+		go SendInferenceRequest("visualnavigationmod", videopath, wg)
 		log.Println("[DEBUG] INFERENCE", k, v)
 		time.Sleep(TIMEWAIT * time.Second)
 	}
@@ -62,33 +60,14 @@ func main() {
 	log.Println("[DEBUG] All done")
 }
 
-func GetMode() string {
-	var mode string
-	switch rand.Float64() > 0.5 {
-	case (true):
-		mode = "CLOUD"
-	case (false):
-		mode = "LOCAL"
-	}
-	mode = "LOCAL"
-	return mode
-}
-
-func SendInferenceRequest(mode string, videopath string, wg *sync.WaitGroup) {
+func SendInferenceRequest(service string, videopath string, wg *sync.WaitGroup) {
 	defer wg.Done()
 	var url = LOCALURL
-	// switch mode {
-	// case "CLOUD":
-	// 	url = CLOUDURL
-	// case "LOCAL":
-	// 	url = LOCALURL
-	// default:
-	// 	url = LOCALURL
-	// }
 
 	var resp InferenceResp
 	var status int
-	status, inferenceRawResp := SendPostReq(url+"/objdetectmod/inference", videopath, "file")
+	serviceURL := fmt.Sprintf("%s/%s/inference", url, service) //objdetectmod
+	status, inferenceRawResp := SendPostReq(serviceURL, videopath, "file")
 	if err := json.Unmarshal(inferenceRawResp, &resp); err != nil {
 		log.Fatal(err)
 	}
@@ -96,23 +75,7 @@ func SendInferenceRequest(mode string, videopath string, wg *sync.WaitGroup) {
 		log.Fatal(resp.Message)
 	}
 	log.Printf("[DEBUG] %s %.2f %s", filepath.Base(videopath), resp.Score, resp.Action)
-	// log.Println("[DEBUG]", mode, resp.Message, resp.Score)
 
-	// if mode == "CLOUD" {
-	// 	log.Println("[DEBUG]", mode, videopath, resp.Message, resp.Score)
-	// 	return
-	// }
-
-	// if resp.Score < UPLOADTHRESHOLD {
-	// 	log.Println("[DEBUG]", mode, videopath, resp.Message, resp.Score, "NOT UPLOAD")
-	// 	return
-	// }
-	// var uploadresp UploadResp
-	// uploadRawResp := SendPostReq(CLOUDURL+"/objdetectmod/upload", videopath, "file")
-	// if err := json.Unmarshal(uploadRawResp, &uploadresp); err != nil {
-	// 	log.Fatal(err)
-	// }
-	// log.Println("[DEBUG]", mode, videopath, resp.Message, resp.Score, "DO UPLOAD")
 }
 
 func SendPostReq(url, videopath, field string) (int, []byte) {
@@ -155,5 +118,4 @@ func SendPostReq(url, videopath, field string) (int, []byte) {
 		log.Fatal(err)
 	}
 	return response.StatusCode, content
-	// log.Println(string(content))
 }
