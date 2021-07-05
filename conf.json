@@ -1,0 +1,18 @@
+{
+    "agent": {
+        "OBJ_DETECT_MOD_SERVICE_PORT" : "50052",
+        "OBJ_DETECT_MOD_POLICY" : "SAVE",
+        "OBJ_DETECT_MOD_UPLOAD_THRESHOLD" : 0.5,
+        "VISUAL_NAVIGATION_MOD_SERVICE_PORT" : "50051",
+        "VISUAL_NAVIGATION_MOD_POLICY" : "SAVE" ,
+        "CLOUDURL" : "",
+        "AGENT_PORT" : "8000",
+        "ROLE" : "EDGE"
+    },
+    "controller": {
+        "CONTROLLER_PORT": "8001",
+        "CHANGE_POLICY_GPUUTIL_THRESHOLD": 0.6,
+        "EDGELIST": [""]
+
+    }
+}

@@ -29,6 +29,9 @@ type PolicyPOSTResp struct {
 }
 
 func main() {
+	if err := conf.Init("./conf.json"); err != nil {
+		log.Fatal("[ERROR] load conf.json fail", err)
+	}
 	sigs := make(chan os.Signal, 1)
 	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
 

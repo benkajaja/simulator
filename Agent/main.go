@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"math/rand"
 	"simulator/Agent/conf"
 	"simulator/Agent/objdetectmod"
@@ -13,6 +14,9 @@ import (
 
 func main() {
 	rand.Seed(time.Now().UnixNano())
+	if err := conf.Init("./conf.json"); err != nil {
+		log.Fatal("[ERROR] load conf.json fail", err)
+	}
 	r := gin.Default()
 	r.GET("status", status.Statuscheck)
 	objDetectModService := r.Group("/objdetectmod")
