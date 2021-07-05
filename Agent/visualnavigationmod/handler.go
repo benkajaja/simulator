@@ -54,17 +54,22 @@ func Inference(g *gin.Context) {
 		g.JSON(http.StatusInternalServerError, gin.H{"message": err})
 		return
 	}
+
+	ext := filepath.Ext(file.Filename)            // .mp4
+	key := strings.TrimSuffix(file.Filename, ext) // abc
+	key = strings.Split(key, "-")[0]              // only keep hash value
+	sourceName := key + "-visualnavigation-orig" + ext
+	targetName := key + "-visualnavigation" + ext
+
 	// file.Filename abc.mp4
-	err = g.SaveUploadedFile(file, dst+file.Filename)
+	err = g.SaveUploadedFile(file, dst+sourceName)
 	if err != nil {
 		log.Println("[ERROR] SaveUploadedFile err: ", err)
 		g.JSON(http.StatusInternalServerError, gin.H{"message": err})
 		return
 	}
-	ext := filepath.Ext(file.Filename)            // .mp4
-	key := strings.TrimSuffix(file.Filename, ext) // abc
-	targetName := key + "-" + conf.ROLE + ext
-	sourceVideoPath, _ := filepath.Abs(dst + file.Filename)
+
+	sourceVideoPath, _ := filepath.Abs(dst + sourceName)
 	outputVideoPath, _ := filepath.Abs(dst + targetName)
 	outputDirPath, _ := filepath.Abs(dst)
 
