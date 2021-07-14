@@ -25,6 +25,7 @@ func main() {
 	objDetectModService.POST("/upload", objdetectmod.Upload)
 	objDetectModService.GET("/policy", objdetectmod.PolicyGET)
 	objDetectModService.POST("/policy", objdetectmod.PolicyPOST)
+	objDetectModService.GET("/tasknum", objdetectmod.TaskNumGET)
 
 	visualNavigationModService := r.Group("/visualnavigationmod")
 	visualNavigationModService.GET("/init", visualnavigationmod.Init)
@@ -32,5 +33,6 @@ func main() {
 	visualNavigationModService.POST("/upload", visualnavigationmod.Upload)
 	visualNavigationModService.GET("/policy", visualnavigationmod.PolicyGET)
 	visualNavigationModService.POST("/policy", visualnavigationmod.PolicyPOST)
+	visualNavigationModService.GET("/tasknum", visualnavigationmod.TaskNumGET)
 	r.Run("0.0.0.0:" + conf.AGENT_PORT)
 }
