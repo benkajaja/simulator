@@ -21,3 +21,8 @@ func Statuscheck(g *gin.Context) {
 		"gpumemUtil": gpumemUtil,
 	})
 }
+
+func Probe(g *gin.Context) {
+	// `dd if=/dev/zero of=probe_100k bs=102400 count=1`
+	g.File("./probe_100k")
+}

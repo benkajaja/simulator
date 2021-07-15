@@ -19,6 +19,7 @@ func main() {
 	}
 	r := gin.Default()
 	r.GET("status", status.Statuscheck)
+	r.GET("probe", status.Probe)
 	objDetectModService := r.Group("/objdetectmod")
 	objDetectModService.GET("/init", objdetectmod.Init)
 	objDetectModService.POST("/inference", objdetectmod.Inference)
