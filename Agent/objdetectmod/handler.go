@@ -16,6 +16,8 @@ import (
 	"google.golang.org/grpc"
 )
 
+var TaskNum = 0
+
 func Init(g *gin.Context) {
 	addr := "0.0.0.0:" + conf.OBJ_DETECT_MOD_SERVICE_PORT
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
@@ -74,7 +76,9 @@ func Inference(g *gin.Context) {
 	var score float32
 	var action string
 	if conf.OBJ_DETECT_MOD_POLICY == "SAVE" || conf.ROLE == "CLOUD" {
+		TaskNum += 1
 		score, action, err = localInference(outputDirPath, sourceVideoPath, outputVideoPath)
+		TaskNum -= 1
 		if err != nil {
 			g.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 			return
@@ -132,4 +136,8 @@ func PolicyPOST(g *gin.Context) {
 		return
 	}
 	g.JSON(http.StatusInternalServerError, gin.H{"message": fmt.Sprintf("policy %s not support", policy)})
+}
+
+func TaskNumGET(g *gin.Context) {
+	g.JSON(http.StatusOK, gin.H{"message": "ok", "num": TaskNum})
 }
