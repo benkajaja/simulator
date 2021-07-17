@@ -12,7 +12,23 @@
     "controller": {
         "CONTROLLER_PORT": "8001",
         "CHANGE_POLICY_GPUUTIL_THRESHOLD": 0.6,
-        "EDGELIST": [""]
-
+        "PROBE_FILE_SIZE_KB": 100,
+        "EDGELIST": {
+            "node3": {
+                "Url": "",
+                "Services": {
+                    "objdetectmod": {
+                        "ServiceUrl": "objdetectmod",
+                        "InferenceTimeSlope": 5.458,
+                        "InferenceTimeConstant": 0.075
+                    }, 
+                    "visualnavigationmod": {
+                        "ServiceUrl": "visualnavigationmod",
+                        "InferenceTimeSlope": 3.651,
+                        "InferenceTimeConstant": 1.419
+                    }
+                }
+            }
+        }
     }
 }
