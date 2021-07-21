@@ -38,12 +38,14 @@
                     "objdetectmod": {
                         "ServiceUrl": "objdetectmod",
                         "InferenceTimeSlope": 5.458,
-                        "InferenceTimeConstant": 0.075
+                        "InferenceTimeConstant": 0.075,
+                        "UploadProb": 0.5
                     }, 
                     "visualnavigationmod": {
                         "ServiceUrl": "visualnavigationmod",
                         "InferenceTimeSlope": 3.651,
-                        "InferenceTimeConstant": 1.419
+                        "InferenceTimeConstant": 1.419,
+                        "UploadProb": 0.0
                     }
                 }
             }
