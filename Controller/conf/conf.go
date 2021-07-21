@@ -13,6 +13,7 @@ import (
 var CONTROLLER_PORT string
 var CHANGE_POLICY_GPUUTIL_THRESHOLD float32
 var EDGELIST = make(map[string]*model.EdgeNode)
+var CLOUDLIST = make(map[string]*model.CloudNode)
 var PROBE_FILE_SIZE_KB int
 
 func Init(confpath string) error {
@@ -49,6 +50,24 @@ func Init(confpath string) error {
 		}
 		EDGELIST[k] = &e
 		log.Println(e)
+	}
+
+	cloudlist := controllerconf["CLOUDLIST"].(map[string]interface{})
+	for k, v := range cloudlist {
+		var c model.CloudNode
+		if err = mapstructure.Decode(v, &c); err != nil {
+			return err
+		}
+		for i, j := range c.Services.(map[string]interface{}) {
+			var s model.Service
+			log.Println(i, j)
+			if err = mapstructure.Decode(j, &s); err != nil {
+				return err
+			}
+			c.Services.(map[string]interface{})[i] = &s
+		}
+		CLOUDLIST[k] = &c
+		log.Println(c)
 	}
 	return nil
 }

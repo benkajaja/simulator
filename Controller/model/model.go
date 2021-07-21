@@ -14,5 +14,6 @@ type EdgeNode struct {
 }
 
 type CloudNode struct {
+	Url      string
 	Services interface{}
 }
