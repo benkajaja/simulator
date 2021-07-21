@@ -41,7 +41,7 @@ func main() {
 	for {
 		select {
 		case <-ticker.C:
-			test()
+			go utils.Update()
 		case <-sigs:
 			return
 		}
