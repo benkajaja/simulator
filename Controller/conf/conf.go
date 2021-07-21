@@ -42,6 +42,7 @@ func Init(confpath string) error {
 		if err = mapstructure.Decode(v, &e); err != nil {
 			return err
 		}
+		e.IsProbing = false
 		for i, j := range e.Services.(map[string]interface{}) {
 			var s model.Service
 			log.Println(i, j)
