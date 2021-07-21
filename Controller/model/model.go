@@ -9,9 +9,12 @@ type Service struct {
 }
 
 type EdgeNode struct {
-	Url      string
-	EstBW    float32 // in Mbps
-	Services interface{}
+	Url                  string
+	EstBW                float32 // in Mbps
+	ProbeCoolDownCounter int
+	IsProbing            bool
+	ProbDuration         int // in second
+	Services             interface{}
 }
 
 type CloudNode struct {
