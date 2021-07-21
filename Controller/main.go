@@ -42,6 +42,7 @@ func main() {
 		select {
 		case <-ticker.C:
 			go utils.Update()
+			go core.GanDanCore()
 		case <-sigs:
 			return
 		}
