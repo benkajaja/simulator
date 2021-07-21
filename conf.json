@@ -13,6 +13,7 @@
         "CONTROLLER_PORT": "8001",
         "CHANGE_POLICY_GPUUTIL_THRESHOLD": 0.6,
         "PROBE_FILE_SIZE_KB": 100,
+        "VIDEO_FILE_SIZE_KB": 814,
         "CLOUDLIST": {
             "local": {
                 "Url": "",

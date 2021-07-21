@@ -15,6 +15,7 @@ var CHANGE_POLICY_GPUUTIL_THRESHOLD float32
 var EDGELIST = make(map[string]*model.EdgeNode)
 var CLOUDLIST = make(map[string]*model.CloudNode)
 var PROBE_FILE_SIZE_KB int
+var VIDEO_FILE_SIZE_KB int
 
 func Init(confpath string) error {
 	var res map[string]interface{}
@@ -33,6 +34,7 @@ func Init(confpath string) error {
 	CONTROLLER_PORT = controllerconf["CONTROLLER_PORT"].(string)
 	CHANGE_POLICY_GPUUTIL_THRESHOLD = float32(controllerconf["CHANGE_POLICY_GPUUTIL_THRESHOLD"].(float64))
 	PROBE_FILE_SIZE_KB = int(controllerconf["PROBE_FILE_SIZE_KB"].(float64))
+	VIDEO_FILE_SIZE_KB = int(controllerconf["VIDEO_FILE_SIZE_KB"].(float64))
 
 	s := controllerconf["EDGELIST"].(map[string]interface{})
 	for k, v := range s {
