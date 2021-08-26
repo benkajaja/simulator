@@ -79,7 +79,7 @@ func Inference(g *gin.Context) {
 	var action string
 	if conf.VISUAL_NAVIGATION_MOD_POLICY == "SAVE" || conf.ROLE == "CLOUD" {
 		TaskNum += 1
-		score, action, err = localInference(outputDirPath, sourceVideoPath, outputVideoPath)
+		score, action, err = localInference(g.Request.Context(), outputDirPath, sourceVideoPath, outputVideoPath)
 		TaskNum -= 1
 		if err != nil {
 			g.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
@@ -87,7 +87,7 @@ func Inference(g *gin.Context) {
 		}
 	} else {
 		action = "VISUAL CLOUD INFERENCE"
-		score, err = cloudInference(sourceVideoPath)
+		score, err = cloudInference(g.Request.Context(), sourceVideoPath)
 		if err != nil {
 			g.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
 			return

@@ -16,6 +16,8 @@ import (
 	service "simulator/Agent/visualnavigationgrpc"
 	"time"
 
+	"go.opentelemetry.io/otel"
+	"go.opentelemetry.io/otel/propagation"
 	"google.golang.org/grpc"
 )
 
@@ -28,7 +30,10 @@ type UploadResp struct {
 	Message string `json:"message"`
 }
 
-func localInference(outputDirPath, sourceVideoPath, outputVideoPath string) (float32, string, error) {
+func localInference(ctx context.Context, outputDirPath, sourceVideoPath, outputVideoPath string) (float32, string, error) {
+	tr := otel.Tracer("")
+	_, span := tr.Start(ctx, "localinference")
+	defer span.End()
 	var score = float32(0)
 	var action = "UNKNOWN"
 	var err error
@@ -71,10 +76,13 @@ func localInference(outputDirPath, sourceVideoPath, outputVideoPath string) (flo
 	return r.Score, action, nil
 }
 
-func cloudInference(sourceVideoPath string) (float32, error) {
+func cloudInference(ctx context.Context, sourceVideoPath string) (float32, error) {
+	tr := otel.Tracer("")
+	_, span := tr.Start(ctx, "cloudinference")
+	defer span.End()
 	var score = float32(0)
 	var resp InferenceResp
-	status, inferenceRawResp, err := sendPostReq(conf.CLOUDURL+"/visualnavigationmod/inference", sourceVideoPath, "file")
+	status, inferenceRawResp, err := sendPostReq(ctx, conf.CLOUDURL+"/visualnavigationmod/inference", sourceVideoPath, "file")
 	if err != nil {
 		return score, err
 	}
@@ -87,7 +95,7 @@ func cloudInference(sourceVideoPath string) (float32, error) {
 	return resp.Score, nil
 }
 
-func sendPostReq(url, videopath, field string) (int, []byte, error) {
+func sendPostReq(ctx context.Context, url, videopath, field string) (int, []byte, error) {
 	file, err := os.Open(videopath)
 
 	if err != nil {
@@ -110,8 +118,13 @@ func sendPostReq(url, videopath, field string) (int, []byte, error) {
 	if err != nil {
 		return 0, nil, err
 	}
-
 	request.Header.Add("Content-Type", writer.FormDataContentType())
+	// var hc propagation.HeaderCarrier
+	// hc = request.Header
+	// var hc propagation.HeaderCarrier{
+	// 	Header: request.Header
+	// }
+	otel.GetTextMapPropagator().Inject(ctx, propagation.HeaderCarrier(request.Header))
 	client := &http.Client{}
 
 	response, err := client.Do(request)
