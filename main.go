@@ -16,7 +16,7 @@ import (
 	"time"
 )
 
-var TIMEWAIT = time.Duration(1)
+var TIMEWAIT = time.Duration(1 * time.Second)
 var VIDEOLIST = []string{
 	"186971ce281553fc.mp4",
 	"34ed221a538be280.mp4",
@@ -53,7 +53,7 @@ func main() {
 		go SendInferenceRequest("objdetectmod", videopath, wg)
 		go SendInferenceRequest("visualnavigationmod", videopath, wg)
 		log.Println("[DEBUG] INFERENCE", k, v)
-		time.Sleep(TIMEWAIT * time.Second)
+		time.Sleep(TIMEWAIT)
 	}
 	wg.Wait()
 
