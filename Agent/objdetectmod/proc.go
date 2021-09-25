@@ -77,7 +77,7 @@ func localInference(outputDirPath, sourceVideoPath, outputVideoPath string) (flo
 		return r.Score, action, nil
 	}
 
-	if r.Score > conf.OBJ_DETECT_MOD_UPLOAD_THRESHOLD {
+	if r.Score > conf.OBJ_DETECT_MOD_UPLOAD_RATIO {
 		// log.Println("[DEBUG]", mode, videopath, resp.Message, resp.Score, "NOT UPLOAD")
 		action = "OBJECT EDGE  INFERENCE NOT UPLOAD"
 		return r.Score, action, nil
