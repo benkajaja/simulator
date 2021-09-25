@@ -43,6 +43,7 @@ type UploadResp struct {
 }
 
 func main() {
+	t1 := time.Now()
 	rand.Seed(time.Now().UnixNano())
 
 	wg := new(sync.WaitGroup)
@@ -56,11 +57,12 @@ func main() {
 		time.Sleep(TIMEWAIT)
 	}
 	wg.Wait()
-
-	log.Println("[DEBUG] All done")
+	t2 := time.Now()
+	log.Printf("[DEBUG] All done %.2fs", t2.Sub(t1).Seconds())
 }
 
 func SendInferenceRequest(service string, videopath string, wg *sync.WaitGroup) {
+	t1 := time.Now()
 	defer wg.Done()
 	var url = LOCALURL
 
@@ -74,7 +76,8 @@ func SendInferenceRequest(service string, videopath string, wg *sync.WaitGroup) 
 	if status != http.StatusOK {
 		log.Fatal(resp.Message)
 	}
-	log.Printf("[DEBUG] %s %.2f %s", filepath.Base(videopath), resp.Score, resp.Action)
+	t2 := time.Now()
+	log.Printf("[DEBUG] %s %.2f %s %.2fs", filepath.Base(videopath), resp.Score, resp.Action, t2.Sub(t1).Seconds())
 
 }
 
