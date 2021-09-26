@@ -8,13 +8,15 @@ DATE_FORMAT = "%Y/%m/%d %H:%M:%S"
 
 logging.basicConfig(level=logging.DEBUG, format=LOG_FORMAT, datefmt=DATE_FORMAT)
 
-pre_bits_recv = psutil.net_io_counters().bytes_recv * 8
-pre_bits_sent = psutil.net_io_counters().bytes_sent * 8
+targetNIC = ""
+
+pre_bits_recv = psutil.net_io_counters(pernic=True)[targetNIC].bytes_recv * 8
+pre_bits_sent = psutil.net_io_counters(pernic=True)[targetNIC].bytes_sent * 8
 
 time.sleep(1)
 
-cur_bits_recv = psutil.net_io_counters().bytes_recv * 8
-cur_bits_sent = psutil.net_io_counters().bytes_sent * 8
+cur_bits_recv = psutil.net_io_counters(pernic=True)[targetNIC].bytes_recv * 8
+cur_bits_sent = psutil.net_io_counters(pernic=True)[targetNIC].bytes_sent * 8
 
 GPUtarget = GPUtil.getGPUs()[0]
 
