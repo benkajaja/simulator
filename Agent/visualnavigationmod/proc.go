@@ -14,6 +14,7 @@ import (
 	"path/filepath"
 	"simulator/Agent/conf"
 	service "simulator/Agent/visualnavigationgrpc"
+	"strings"
 	"time"
 
 	"google.golang.org/grpc"
@@ -32,6 +33,8 @@ func localInference(outputDirPath, sourceVideoPath, outputVideoPath string) (flo
 	var score = float32(0)
 	var action = "UNKNOWN"
 	var err error
+
+	t1 := time.Now()
 
 	addr := "0.0.0.0:" + conf.VISUAL_NAVIGATION_MOD_SERVICE_PORT
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
@@ -59,6 +62,11 @@ func localInference(outputDirPath, sourceVideoPath, outputVideoPath string) (flo
 		return score, action, err
 	}
 	log.Println("[DEBUG] inference result: ", r.Status, r.Score)
+
+	filename := filepath.Base(sourceVideoPath)
+	t2 := time.Now()
+	filenameSplit := strings.Split(filename, "-")
+	log.Printf("[DEBUG] VISUAL %5s %s INFERENCETIME: %.3fs", conf.ROLE, filenameSplit[0], t2.Sub(t1).Seconds())
 
 	switch conf.ROLE {
 	case "CLOUD":
