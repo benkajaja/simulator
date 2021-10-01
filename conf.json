@@ -20,13 +20,13 @@
                 "Services": {
                     "objdetectmod": {
                         "ServiceUrl": "objdetectmod",
-                        "InferenceTimeSlope": 2.945,
-                        "InferenceTimeConstant": 0.388
+                        "InferenceTimeSlope": 4.002,
+                        "InferenceTimeConstant": 0.6698
                     }, 
                     "visualnavigationmod": {
                         "ServiceUrl": "visualnavigationmod",
-                        "InferenceTimeSlope": 1.298,
-                        "InferenceTimeConstant": 1.16
+                        "InferenceTimeSlope": 0.7439,
+                        "InferenceTimeConstant": 1.106
                     }
                 }
             }
@@ -37,14 +37,14 @@
                 "Services": {
                     "objdetectmod": {
                         "ServiceUrl": "objdetectmod",
-                        "InferenceTimeSlope": 5.458,
-                        "InferenceTimeConstant": 0.075,
+                        "InferenceTimeSlope": 5.383,
+                        "InferenceTimeConstant": 0.241,
                         "UploadProb": 0.5
                     }, 
                     "visualnavigationmod": {
                         "ServiceUrl": "visualnavigationmod",
-                        "InferenceTimeSlope": 3.651,
-                        "InferenceTimeConstant": 1.419,
+                        "InferenceTimeSlope": 3.592,
+                        "InferenceTimeConstant": 1.364,
                         "UploadProb": 0.0
                     }
                 }
