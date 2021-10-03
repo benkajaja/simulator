@@ -23,7 +23,7 @@ func TaroAlgo(e *model.EdgeNode, se *model.Service, sc *model.Service) string {
 
 // return est. inference time
 func G(taskNum int, slope, constant float32) float32 {
-	return float32(taskNum)*slope + constant
+	return float32(taskNum+1)*slope + constant
 }
 
 // fileSize in bits,
