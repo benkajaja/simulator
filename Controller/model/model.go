@@ -1,6 +1,7 @@
 package model
 
 type Service struct {
+	Policy                string
 	ServiceUrl            string
 	UploadProb            float32
 	ConcurrentTask        int

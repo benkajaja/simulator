@@ -14,7 +14,10 @@ func GanDanCore() {
 		for sname, s := range e.Services.(map[string]interface{}) {
 			go func(sname string, s *model.Service) {
 				policy := algo.TaroAlgo(e, s, cloudsvc[sname].(*model.Service))
-				utils.ChangePolicy(e.Url, s.ServiceUrl, policy)
+				if cloudsvc[sname].(*model.Service).Policy != policy {
+					cloudsvc[sname].(*model.Service).Policy = policy
+					utils.ChangePolicy(e.Url, s.ServiceUrl, policy)
+				}
 			}(sname, s.(*model.Service))
 		}
 	}
