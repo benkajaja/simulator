@@ -36,13 +36,15 @@ for pid in targetPID:
     p = psutil.Process(pid)
     mem += p.memory_info().rss / psutil.virtual_memory().total
 
-log = "[DEBUG] STATS. CPU: %.2f, MEM: %.2f, GPU: %.2f, GPUMEM: %.2f, UPLINK: %.2f, DOWNLINK: %.2f" % (
+log = "[DEBUG] STATS. CPU: %.2f, MEM: %.2f, GPU: %.2f, GPUMEM: %.2f, UPLINK: %.2f, DOWNLINK: %.2f, SENT: %.2f, RECV: %.2f" % (
     psutil.cpu_percent()/100,
     mem,
     targetGPU.load,
     targetGPU.memoryUtil,
     (cur_bits_sent - pre_bits_sent) /(1024), # in Kbps
-    (cur_bits_recv - pre_bits_recv) /(1024) # in Kbps
+    (cur_bits_recv - pre_bits_recv) /(1024), # in Kbps
+    (pre_bits_sent) / 1024, # in Kbits
+    (pre_bits_recv) / 1024  # in Kbits
 )
 
 # print(log)
