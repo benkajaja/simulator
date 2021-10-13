@@ -92,7 +92,7 @@ func Update() {
 			}(e, ctx)
 		} else if e.IsProbing {
 			e.ProbDuration += 1
-			e.EstBW = e.EstBW * float32(e.ProbDuration) / float32(e.ProbDuration+1)
+			e.EstBW = 0.00000000001
 		} else if e.ProbeCoolDownCounter > 0 {
 			e.ProbeCoolDownCounter -= 1
 		}
