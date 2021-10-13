@@ -85,7 +85,7 @@ func Update() {
 				}
 				e.EstBW = res
 				if float32(conf.PROBE_FILE_SIZE_KB*8)/(res*1024) > 1 {
-					e.ProbeCoolDownCounter = 20
+					e.ProbeCoolDownCounter = 10
 				}
 				e.ProbDuration = 0
 				e.IsProbing = false
