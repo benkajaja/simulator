@@ -20,6 +20,7 @@ func main() {
 	sigs := make(chan os.Signal, 1)
 	signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM)
 
+	// Trigger update, gandancore, debugmessage every seconds
 	ticker := time.NewTicker(time.Second * 1)
 	defer ticker.Stop()
 

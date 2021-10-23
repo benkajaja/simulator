@@ -7,6 +7,9 @@ import (
 	"simulator/Controller/utils"
 )
 
+// Invoke Taro algo to find best policy for each service.
+//
+// Change service policy if the policy is different from the previous one.
 func GanDanCore() {
 	targetCloud := conf.CLOUDLIST["local"]
 	cloudsvc := targetCloud.Services.(map[string]interface{})

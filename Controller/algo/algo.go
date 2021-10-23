@@ -5,6 +5,7 @@ import (
 	"simulator/Controller/model"
 )
 
+// Calculate estimated E2E latency based on `concurrent task` and `avaliable bandwidth`
 func TaroAlgo(e *model.EdgeNode, se *model.Service, sc *model.Service) string {
 	// est completion time on edge
 	estInferenceTimeE := G(se.ConcurrentTask, se.InferenceTimeSlope, se.InferenceTimeConstant)

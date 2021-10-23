@@ -33,6 +33,7 @@ type PolicyPOSTResp struct {
 	Message string `json:"message"`
 }
 
+// Probe avaliable bandwidth. Request 100KB file and calculate duration.
 func ProbeBW(url string) (float32, error) {
 	var err error
 	var res float32 // in Mbps
@@ -52,6 +53,7 @@ func ProbeBW(url string) (float32, error) {
 	return res, nil
 }
 
+// Get concurrent task number of specific url/service.
 func GetConcurrentTask(url, service string) (int, error) {
 	var err error
 	var res int
@@ -71,6 +73,14 @@ func GetConcurrentTask(url, service string) (int, error) {
 	return res, nil
 }
 
+// Update network/computing status
+//
+// Computing status -> Iterate every service on every edge nodes. Get concurrent task number.
+//
+// Network status ->
+// If transferring a video takes more than 1 second, go into cool down state (last 10s).
+// If current state is probing, set estimate bandwidth close to zero.
+// If current state is cool down, cool down counter--.
 func Update() {
 	ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
 	defer cancel()
@@ -92,7 +102,7 @@ func Update() {
 			}(e, ctx)
 		} else if e.IsProbing {
 			e.ProbDuration += 1
-			e.EstBW = 0.00000000001
+			e.EstBW = 0.00000000001 // set small value to avoid zero divide error
 		} else if e.ProbeCoolDownCounter > 0 {
 			e.ProbeCoolDownCounter -= 1
 		}
@@ -123,6 +133,7 @@ func Update() {
 	}
 }
 
+// Change service policy
 func ChangePolicy(host, service, policy string) error {
 	var err error
 	posturl := fmt.Sprintf("http://%s/%s/policy", host, service)
