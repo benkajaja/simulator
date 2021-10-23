@@ -10,7 +10,6 @@ import (
 	"github.com/goinggo/mapstructure"
 )
 
-var CONTROLLER_PORT string
 var CHANGE_POLICY_GPUUTIL_THRESHOLD float32
 var EDGELIST = make(map[string]*model.EdgeNode)
 var CLOUDLIST = make(map[string]*model.CloudNode)
@@ -31,7 +30,6 @@ func Init(confpath string) error {
 	}
 
 	controllerconf = res["controller"].(map[string]interface{})
-	CONTROLLER_PORT = controllerconf["CONTROLLER_PORT"].(string)
 	CHANGE_POLICY_GPUUTIL_THRESHOLD = float32(controllerconf["CHANGE_POLICY_GPUUTIL_THRESHOLD"].(float64))
 	PROBE_FILE_SIZE_KB = int(controllerconf["PROBE_FILE_SIZE_KB"].(float64))
 	VIDEO_FILE_SIZE_KB = int(controllerconf["VIDEO_FILE_SIZE_KB"].(float64))
