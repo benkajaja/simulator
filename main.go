@@ -29,7 +29,7 @@ var VIDEOLIST = []string{
 	"ebe6a4f020a6a972.mp4",
 	"f563464ab2b0ed43.mp4",
 }
-var VIDEODIR = "./Video"
+var VIDEODIR = "./Video/1s"
 var LOCALURL = "http://localhost:8000"
 
 type InferenceResp struct {
