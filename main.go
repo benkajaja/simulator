@@ -27,7 +27,40 @@ var VIDEOLIST = []string{
 	"9306144e1e6252bb.mp4",
 	"af63c74c8601c8dd.mp4",
 	"ebe6a4f020a6a972.mp4",
-	"f563464ab2b0ed43.mp4",
+	"f563464ab2b0ed43.mp4", //10
+
+	"a91b2f479c78380a.mp4",
+	"cbf33b454853d968.mp4",
+	"b420580c0e8004cf.mp4",
+	"b5d3d49589157b2c.mp4",
+	"41eafc7cd9083b59.mp4",
+	"e4fd5098d8c6c2f2.mp4",
+	"c2fb61cd102c8dc4.mp4",
+	"f053acbb14d7f8b8.mp4",
+	"59064c080200000c.mp4",
+	"f39a2c02233fdcbc.mp4", //20
+
+	"f033cf6ccc08c1ba.mp4",
+	"108930c7f004595c.mp4",
+	"fa81d82da1e60cc7.mp4",
+	"e328210ee6eec0d4.mp4",
+	"7a882dffd7f66e5d.mp4",
+	"5f9b3baef2ddf136.mp4",
+	"4cdaffb90d22b3d7.mp4",
+	"ef2d347d1f94fd3b.mp4",
+	"b2e00ea7bb8f523b.mp4",
+	"13ec628ed487a191.mp4", //30
+
+	"4bb6493dff0a1d14.mp4",
+	"504fb0fbd42e89ae.mp4",
+	"cdd327bb30b081af.mp4",
+	"f02e88cf140a2013.mp4",
+	"e59e1894001c58aa.mp4",
+	"972178f46c480a7a.mp4",
+	"694b7876b48a810a.mp4",
+	"34a92fa03e95c8f9.mp4",
+	"fdbcdb3518741c6b.mp4",
+	"cd7f02f760c6e113.mp4", //40
 }
 var VIDEODIR = "./Video/1s"
 var LOCALURL = "http://localhost:8000"
