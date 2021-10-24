@@ -14,6 +14,7 @@ import (
 	"os"
 	"path/filepath"
 	"simulator/Agent/conf"
+	"simulator/Agent/model"
 	service "simulator/Agent/objdetectgrpc"
 	"strings"
 	"time"
@@ -90,7 +91,7 @@ func localInference(outputDirPath, sourceVideoPath, outputVideoPath string) (flo
 
 	action = fmt.Sprintf("%s INFERENCE", conf.ROLE)
 
-	if conf.ROLE == "CLOUD" {
+	if conf.ROLE == model.ROLE_CLOUD {
 		action = "OBJECT CLOUD INFERENCE" // not used
 		return r.Score, action, nil
 	}

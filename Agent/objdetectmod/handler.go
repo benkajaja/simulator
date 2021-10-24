@@ -10,6 +10,7 @@ import (
 	"time"
 
 	"simulator/Agent/conf"
+	"simulator/Agent/model"
 	service "simulator/Agent/objdetectgrpc"
 
 	"github.com/gin-gonic/gin"
@@ -78,7 +79,7 @@ func Inference(g *gin.Context) {
 
 	var score float32
 	var action string
-	if conf.OBJ_DETECT_MOD_POLICY == "SAVE" || conf.ROLE == "CLOUD" {
+	if conf.OBJ_DETECT_MOD_POLICY == model.POLICY_SAVE || conf.ROLE == model.ROLE_CLOUD {
 		TaskNum += 1
 		score, action, err = localInference(outputDirPath, sourceVideoPath, outputVideoPath)
 		TaskNum -= 1
@@ -142,7 +143,7 @@ func PolicyGET(g *gin.Context) {
 // modify current policy
 func PolicyPOST(g *gin.Context) {
 	policy := g.PostForm("policy")
-	if policy == "UPLOAD" || policy == "SAVE" {
+	if policy == model.POLICY_UPLOAD || policy == model.POLICY_SAVE {
 		conf.OBJ_DETECT_MOD_POLICY = policy
 		g.JSON(http.StatusOK, gin.H{"messge": "OK"})
 		return

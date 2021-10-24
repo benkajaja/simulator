@@ -13,6 +13,7 @@ import (
 	"os"
 	"path/filepath"
 	"simulator/Agent/conf"
+	"simulator/Agent/model"
 	service "simulator/Agent/visualnavigationgrpc"
 	"strings"
 	"time"
@@ -72,10 +73,10 @@ func localInference(outputDirPath, sourceVideoPath, outputVideoPath string) (flo
 	log.Printf("[DEBUG] VISUAL %5s %s INFERENCETIME: %.3fs", conf.ROLE, filenameSplit[0], t2.Sub(t1).Seconds())
 
 	switch conf.ROLE {
-	case "CLOUD":
+	case model.ROLE_CLOUD:
 		action = "VISUAL CLOUD INFERENCE"
 		return r.Score, action, nil
-	case "EDGE":
+	case model.ROLE_EDGE:
 		action = "VISUAL EDGE  INFERENCE"
 		return r.Score, action, nil
 	}
