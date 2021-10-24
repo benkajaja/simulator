@@ -47,5 +47,4 @@ log = "[DEBUG] STATS. CPU: %.2f, MEM: %.2f, GPU: %.2f, GPUMEM: %.2f, UPLINK: %.2
     (pre_bits_recv) / 1024  # in Kbits
 )
 
-# print(log)
 logging.debug(log)

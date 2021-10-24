@@ -45,9 +45,6 @@ func localInference(outputDirPath, sourceVideoPath, outputVideoPath string) (flo
 	defer cancel()
 	conn, err := grpc.DialContext(ctx, addr, grpc.WithInsecure(), grpc.WithBlock())
 	if err != nil {
-		// log.Println("[ERROR] Can not connect to gRPC server: ", err)
-		// g.JSON(http.StatusInternalServerError, gin.H{"message": err})
-		// return
 		return score, action, err
 	}
 
@@ -60,9 +57,6 @@ func localInference(outputDirPath, sourceVideoPath, outputVideoPath string) (flo
 		},
 	)
 	if err != nil {
-		// log.Println("[ERROR] Can not connect to gRPC server: ", err)
-		// g.JSON(http.StatusInternalServerError, gin.H{"message": err})
-		// return
 		return score, action, err
 	}
 	log.Println("[DEBUG] inference result: ", r.Status, r.Score)
@@ -144,5 +138,4 @@ func sendPostReq(url, videopath, field string) (int, []byte, error) {
 	}
 
 	return response.StatusCode, content, nil
-	// log.Println(string(content))
 }

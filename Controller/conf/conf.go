@@ -16,7 +16,7 @@ var CLOUDLIST = make(map[string]*model.CloudNode)
 var PROBE_FILE_SIZE_KB int
 var VIDEO_FILE_SIZE_KB int
 
-// Load conf.json into global variable
+// Load conf.json(controller) into global variable
 func Init(confpath string) error {
 	var res map[string]interface{}
 	var controllerconf map[string]interface{}

@@ -75,6 +75,10 @@ type UploadResp struct {
 	Message string `json:"message"`
 }
 
+// Send video in VIDEOLIST to objdetectmod and visualnavigationmod
+//
+//  Send 1-second slice: VIDEODIR = "./Video/1s", len(VIDEOLIST) = 40, TIMEWAIT = 1
+//  Send 4-second slice: VIDEODIR = "./Video/4s", len(VIDEOLIST) = 10, TIMEWAIT = 4
 func main() {
 	t1 := time.Now()
 	rand.Seed(time.Now().UnixNano())
@@ -101,7 +105,7 @@ func SendInferenceRequest(service string, videopath string, wg *sync.WaitGroup) 
 
 	var resp InferenceResp
 	var status int
-	serviceURL := fmt.Sprintf("%s/%s/inference", url, service) //objdetectmod
+	serviceURL := fmt.Sprintf("%s/%s/inference", url, service)
 	status, inferenceRawResp := SendPostReq(serviceURL, videopath, "file")
 	if err := json.Unmarshal(inferenceRawResp, &resp); err != nil {
 		log.Fatal(err)
