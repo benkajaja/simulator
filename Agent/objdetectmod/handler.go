@@ -16,8 +16,10 @@ import (
 	"google.golang.org/grpc"
 )
 
+// keep current tasknum
 var TaskNum = 0
 
+// Init AI model handler
 func Init(g *gin.Context) {
 	addr := "0.0.0.0:" + conf.OBJ_DETECT_MOD_SERVICE_PORT
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
@@ -47,6 +49,7 @@ func Init(g *gin.Context) {
 	g.JSON(http.StatusOK, gin.H{"message": r.Status})
 }
 
+// Inference task handler
 func Inference(g *gin.Context) {
 	dst := "./upload/"
 	file, err := g.FormFile("file")
@@ -99,6 +102,9 @@ func Inference(g *gin.Context) {
 	})
 }
 
+// Upload video handler
+//
+// back up valuable video
 func Upload(g *gin.Context) {
 	dst := "./upload/"
 	file, err := g.FormFile("file")
@@ -124,10 +130,16 @@ func Upload(g *gin.Context) {
 	})
 }
 
+// Policy GET handler
+//
+// return current policy
 func PolicyGET(g *gin.Context) {
 	g.JSON(http.StatusOK, gin.H{"messge": "OK", "policy": conf.OBJ_DETECT_MOD_POLICY})
 }
 
+// Policy POST handler
+//
+// modify current policy
 func PolicyPOST(g *gin.Context) {
 	policy := g.PostForm("policy")
 	if policy == "UPLOAD" || policy == "SAVE" {
@@ -138,6 +150,9 @@ func PolicyPOST(g *gin.Context) {
 	g.JSON(http.StatusInternalServerError, gin.H{"message": fmt.Sprintf("policy %s not support", policy)})
 }
 
+// Tasknum GET handler
+//
+// return current tasknum
 func TaskNumGET(g *gin.Context) {
 	g.JSON(http.StatusOK, gin.H{"message": "ok", "num": TaskNum})
 }

@@ -29,6 +29,9 @@ type UploadResp struct {
 	Message string `json:"message"`
 }
 
+// local inference function
+//
+// send video to local endpoint for inference via gRPC connection
 func localInference(outputDirPath, sourceVideoPath, outputVideoPath string) (float32, string, error) {
 	var score = float32(0)
 	var action = "UNKNOWN"
@@ -79,6 +82,9 @@ func localInference(outputDirPath, sourceVideoPath, outputVideoPath string) (flo
 	return r.Score, action, nil
 }
 
+// cloud inference function
+//
+// send video to cloud for inference
 func cloudInference(sourceVideoPath string) (float32, error) {
 	var score = float32(0)
 	var resp InferenceResp
@@ -95,6 +101,7 @@ func cloudInference(sourceVideoPath string) (float32, error) {
 	return resp.Score, nil
 }
 
+// Send post request (contains video)
 func sendPostReq(url, videopath, field string) (int, []byte, error) {
 	file, err := os.Open(videopath)
 

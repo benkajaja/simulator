@@ -17,6 +17,7 @@ var CLOUDURL string
 var AGENT_PORT string
 var ROLE string // {CLOUD, EDGE}
 
+// Load conf.json(agent) into global variable
 func Init(confpath string) error {
 	var res map[string]interface{}
 	var agentconf map[string]interface{}
