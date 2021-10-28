@@ -1,6 +1,6 @@
 #!/bin/bash
 while true
 do
-    python record.py &
+    python3 record.py &
     sleep 1
 done 
