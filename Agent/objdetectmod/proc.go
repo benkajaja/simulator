@@ -66,7 +66,7 @@ func localInference(outputDirPath, sourceVideoPath, outputVideoPath string) (flo
 			VideoPath:        sourceVideoPath,
 			OverlapOutputDir: "overlap",
 			OverlapOutput:    "no",
-			DetectedOutput:   "yes",
+			DetectedOutput:   "no",
 			// DetectedOutputDir:      "output",
 			// OutputLabeledVideoPath: "output/onesec.mp4",
 			DetectedOutputDir:      outputDirPath,
